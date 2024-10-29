@@ -1,7 +1,6 @@
 from llama_cpp import Llama
-
-# import chromadb
-# from chromadb.utils import embedding_functions
+import chromadb
+from chromadb.utils import embedding_functions
 from text_splitter import split_text
 import json
 import os
@@ -35,29 +34,42 @@ else:
 #     print(f"Chunk {i+1}:{chunk}\n")
 
 
-# chroma_client = chromadb.Client()
-# collection = chroma_client.create_collection(name="moby_dick")
+chroma_client = chromadb.Client()
+collection_name = "moby_dick"
+
+if collection_name in chroma_client.list_collections():
+    print("already a collection")
+    collection = chroma_client.get_collection(name=collection_name)
+else:
+    print("createa new collection")
+    collection = chroma_client.create_collection(name=collection_name)
 
 
-# embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
-#     model_name="all-MiniLM-L6-v2"
-# )
+embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
+    model_name="all-MiniLM-L6-v2"
+)
+
+count = collection.count()
+
+if count > 0:
+    print(f"{count} greater than zero")
+    existing_ids = set(collection.get()["ids"])
+else:
+    print("create empty set")
+    existing_ids = set()
+for id, chunk in enumerate(chunks):
+    chunk_id = f"chunk_{id}"
+    if chunk_id not in existing_ids:
+        embedding = embedding_function([chunk])[0]
+
+        collection.add(
+            documents=[chunk],
+            metadatas=[{"source": "moby_dick"}],
+            ids=[chunk_id],
+            embeddings=[embedding],
+        )
 
 
-# for id, chunk in enumerate(chunks):
-#     collection.add(
-#         documents=[chunk],
-#         metadatas=[{"source": "moby_dick"}],
-#         ids=[f"chunk_{id}"],
-#         embedding_function=embedding_function,
-#     )
-
-
-# count = collection.count()
-# print(count)
-
-
-# # results = collection.get(ids=["chunk_0", "chunk_1", "chunk_2"])
-# # for i, document in enumerate(results["documents"]):
-# #     print(f"Retrieved Chunk {i+1}:
-# # {document}\n")
+results = collection.get(ids=["chunk_13", "chunk_14", "chunk_15"])
+for i, document in enumerate(results["documents"]):
+    print(f"Retrieved Chunk {i+1}: {document}")
