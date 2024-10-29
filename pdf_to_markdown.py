@@ -1,9 +1,8 @@
-import pymupdf4llm
-import pathlib
+from pdfminer.high_level import extract_text
 
 pdf_path = "data/herman-melville-moby-dick.pdf"
+text = extract_text(pdf_path)
 
-markdown_text = pymupdf4llm.to_markdown(pdf_path)
-
-output_path = "data/moby-dick-output.md"
-pathlib.Path(output_path).write_text(markdown_text, encoding="utf-8")
+output_path = "data/moby-dick-output2.md"
+with open(output_path, "w", encoding="utf-8") as file:
+    file.write(text)
