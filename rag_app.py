@@ -4,6 +4,7 @@
 
 from transformers import pipeline
 import chromadb
+from chromadb.config import Settings
 from chromadb.utils import embedding_functions
 from text_splitter import split_text
 import json
@@ -74,9 +75,13 @@ def main():
     countAfterLoop = collection.count()
     print(f"count: ${countAfterLoop}")
 
-    query = "What is the whale's significance in Moby-Dick?"
-    response = generate_response(query, collection, gpt_neo)
-    print(response)
+    # Chatbot loop
+    while True:
+        query = input("Ask a question about Moby-Dick (or type 'exit' to quit): ")
+        if query.lower() == "exit":
+            break
+        response = generate_response(query, collection, gpt_neo)
+        print(response)
 
 
 def generate_response(query, collection, gpt_neo):
