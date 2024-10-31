@@ -1,6 +1,6 @@
-import multiprocessing
+# import multiprocessing
 
-multiprocessing.set_start_method("spawn")
+# multiprocessing.set_start_method("spawn")
 
 from transformers import pipeline
 import chromadb
@@ -45,6 +45,7 @@ def main():
     )
 
     count = collection.count()
+    print(f"count: ${count}")
 
     if count > 0:
         print(f"{count} greater than zero")
@@ -64,11 +65,12 @@ def main():
                 embeddings=[embedding],
             )
 
+    countAfterLoop = collection.count()
+    print(f"count: ${countAfterLoop}")
+
     query = "What is the whale's significance in Moby-Dick?"
     response = generate_response(query, collection, gpt2)
     print(response)
-
-    chroma_client.close()
 
 
 def generate_response(query, collection, gpt2):
