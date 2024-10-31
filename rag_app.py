@@ -85,14 +85,19 @@ def main():
 
 
 def generate_response(query, collection, gpt_neo):
-    results = collection.query(query_texts=[query], n_results=3)
-
-    context = "\n".join(
-        [
-            " ".join(doc) if isinstance(doc, list) else doc
-            for doc in results["documents"]
-        ]
+    results = collection.query(
+        query_texts=[query], n_results=5, include=["documents", "distances"]
     )
+
+    sorted_results = sorted(
+        zip(results["documents"], results["distances"]), key=lambda x: x[1]
+    )
+
+    top_documents = [
+        " ".join(doc) if isinstance(doc, list) else doc for doc, _ in sorted_results[:3]
+    ]
+
+    context = "\n".join(top_documents)
 
     prompt = f"The following passage is from Moby-Dick:\n{context}\nPlease provide an answer to the following question based on the passage: {query}"
     response = gpt_neo(
