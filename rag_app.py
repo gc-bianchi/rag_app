@@ -74,16 +74,16 @@ def main():
 
 
 def generate_response(query, collection, gpt2):
-    results = collection.query(query_texts=[query], n_results=1)
+    results = collection.query(query_texts=[query], n_results=3)
 
-    context = "".join(
+    context = "\n".join(
         [
             " ".join(doc) if isinstance(doc, list) else doc
             for doc in results["documents"]
         ]
     )
 
-    prompt = f"Based on the following text:\n{context}\nAnswer the question: {query}"
+    prompt = f"The following passage is from Moby-Dick:\n{context}\nPlease provide an answer to the following question based on the passage: {query}"
     response = gpt2(prompt, max_new_tokens=50, truncation=True)
 
     generated_text = response[0]["generated_text"]
