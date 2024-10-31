@@ -100,6 +100,16 @@ def generate_response(query, collection, gpt_neo):
     )
 
     generated_text = response[0]["generated_text"]
+    answer_start = generated_text.find(
+        "Please provide an answer to the following question based on the passage:"
+    )
+    if answer_start != -1:
+        generated_text = generated_text[
+            answer_start
+            + len(
+                "Please provide an answer to the following question based on the passage:"
+            ) :
+        ].strip()
     return generated_text
 
 
