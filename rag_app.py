@@ -26,11 +26,6 @@ def main():
 
     chroma_client = chromadb.Client()
 
-    # List all existing collections to check persistence
-    existing_collections = chroma_client.list_collections()
-    print("Existing collections:")
-    for col in existing_collections:
-        print(f"- {col.name}")
     collection_name = "moby_dick"
 
     # Check if collection exists by listing collections
