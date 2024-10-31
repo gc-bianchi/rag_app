@@ -91,7 +91,8 @@ def generate_response(query, collection, gpt_neo):
 
     context = "\n".join(top_documents)
 
-    prompt = f"The following text is extracted from Moby-Dick. Use the information provided to answer the question as accurately and concisely as possible. Answer only the question given and do not add additional information. Text: {context} Question: {query} Answer:"
+    # prompt = f"The following text is extracted from Moby-Dick. Use the information provided to answer the question as accurately and concisely as possible. Answer only the question given and do not add additional information. Text: {context} Question: {query} Answer:"
+    prompt = f"""The following passage is from Moby-Dick: {context} Please provide an answer to the following question based on the passage: {query}"""
     response = gpt_neo(
         prompt, max_new_tokens=150, truncation=True, return_full_text=True
     )
