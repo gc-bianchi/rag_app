@@ -2,7 +2,7 @@ import multiprocessing
 
 multiprocessing.set_start_method("spawn")
 
-from llama_cpp import Llama
+from transformers import pipeline
 import chromadb
 from chromadb.utils import embedding_functions
 from text_splitter import split_text
@@ -11,11 +11,7 @@ import os
 
 
 def main():
-    llama = Llama.from_pretrained(
-        repo_id="QuantFactory/Llama-3.2-1B-GGUF",
-        filename="Llama-3.2-1B.Q2_K.gguf",
-        n_ctx=1024,
-    )
+    gpt2 = pipeline("text-generation", model="gpt2")
 
     markdown_path = "data/moby-dick-output.md"
     with open(markdown_path, "r", encoding="utf-8") as file:
@@ -24,18 +20,12 @@ def main():
     chunks_path = "data/moby_dick_chunks.json"
 
     if os.path.exists(chunks_path):
-        # print("it exist!")
         with open(chunks_path, "r", encoding="utf-8") as file:
             chunks = json.load(file)
     else:
-        # print("create chunks")
         chunks = split_text(content)
         with open(chunks_path, "w", encoding="utf-8") as file:
             json.dump(chunks, file)
-
-    # print("First 3 chunks:")
-    # for i, chunk in enumerate(chunks[13:16]):
-    #     print(f"Chunk {i+1}:{chunk}\n")
 
     chroma_client = chromadb.Client()
     collection_name = "moby_dick"
@@ -73,21 +63,21 @@ def main():
             )
 
     query = "What is the whale's significance in Moby-Dick?"
-    response = generate_response(query, collection, llama)
+    response = generate_response(query, collection, gpt2)
     print(response)
 
     chroma_client.close()
 
 
-def generate_response(query, collection, llama):
+def generate_response(query, collection, gpt2):
     results = collection.query(query_texts=[query], n_results=1)
 
     context = "\n".join(results["documents"])
 
     prompt = f"Based on the following text:\n{context}\nAnswer the question: {query}"
-    response = llama(prompt)
+    response = gpt2(prompt, max_length=100)
 
-    generated_text = response["choices"][0]["text"]
+    generated_text = response[0]["generated_text"]
     return generated_text
 
 
