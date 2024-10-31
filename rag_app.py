@@ -12,7 +12,7 @@ import os
 
 def main():
     # Load GPT-2 model using transformers library
-    gpt2 = pipeline("text-generation", model="gpt2")
+    gpt_neo = pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B")
 
     markdown_path = "data/moby-dick-output.md"
     with open(markdown_path, "r", encoding="utf-8") as file:
@@ -69,11 +69,11 @@ def main():
     print(f"count: ${countAfterLoop}")
 
     query = "What is the whale's significance in Moby-Dick?"
-    response = generate_response(query, collection, gpt2)
+    response = generate_response(query, collection, gpt_neo)
     print(response)
 
 
-def generate_response(query, collection, gpt2):
+def generate_response(query, collection, gpt_neo):
     results = collection.query(query_texts=[query], n_results=3)
 
     context = "\n".join(
@@ -84,7 +84,9 @@ def generate_response(query, collection, gpt2):
     )
 
     prompt = f"The following passage is from Moby-Dick:\n{context}\nPlease provide an answer to the following question based on the passage: {query}"
-    response = gpt2(prompt, max_new_tokens=50, truncation=True)
+    response = gpt_neo(
+        prompt, max_new_tokens=150, truncation=True, return_full_text=True
+    )
 
     generated_text = response[0]["generated_text"]
     return generated_text
