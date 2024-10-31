@@ -11,6 +11,7 @@ import os
 
 
 def main():
+    # Load GPT-2 model using transformers library
     gpt2 = pipeline("text-generation", model="gpt2")
 
     markdown_path = "data/moby-dick-output.md"
@@ -30,6 +31,7 @@ def main():
     chroma_client = chromadb.Client()
     collection_name = "moby_dick"
 
+    # Check if collection exists by listing collections
     collections = [col.name for col in chroma_client.list_collections()]
     if collection_name in collections:
         print("already a collection")
@@ -72,10 +74,15 @@ def main():
 def generate_response(query, collection, gpt2):
     results = collection.query(query_texts=[query], n_results=1)
 
-    context = "\n".join(results["documents"])
+    context = "".join(
+        [
+            " ".join(doc) if isinstance(doc, list) else doc
+            for doc in results["documents"]
+        ]
+    )
 
     prompt = f"Based on the following text:\n{context}\nAnswer the question: {query}"
-    response = gpt2(prompt, max_length=100)
+    response = gpt2(prompt, max_new_tokens=50, truncation=True)
 
     generated_text = response[0]["generated_text"]
     return generated_text
