@@ -8,10 +8,7 @@ import os
 
 
 def main():
-    # Load GPT-2 model using transformers library
-    gpt_neo = pipeline(
-        "text-generation", model="EleutherAI/gpt-neo-1.3B", pad_token_id=50256
-    )
+    gpt_neo = pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B")
 
     markdown_path = "data/moby-dick-output.md"
     with open(markdown_path, "r", encoding="utf-8") as file:
@@ -39,10 +36,10 @@ def main():
     # Check if collection exists by listing collections
     collections = [col.name for col in chroma_client.list_collections()]
     if collection_name in collections:
-        print("already a collection")
+        # print("already a collection")
         collection = chroma_client.get_collection(name=collection_name)
     else:
-        print("create a new collection")
+        # print("create a new collection")
         collection = chroma_client.create_collection(name=collection_name)
 
     embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
@@ -50,13 +47,13 @@ def main():
     )
 
     count = collection.count()
-    print(f"count: ${count}")
+    # print(f"count: ${count}")
 
     if count > 0:
-        print(f"{count} greater than zero")
+        # print(f"{count} greater than zero")
         existing_ids = set(collection.get()["ids"])
     else:
-        print("create empty set")
+        # print("create empty set")
         existing_ids = set()
     for id, chunk in enumerate(chunks):
         chunk_id = f"chunk_{id}"
@@ -70,9 +67,6 @@ def main():
                 embeddings=[embedding],
             )
 
-    countAfterLoop = collection.count()
-    print(f"count: ${countAfterLoop}")
-
     # Chatbot loop
     while True:
         query = input("Ask a question about Moby-Dick (or type 'exit' to quit): ")
@@ -84,7 +78,7 @@ def main():
 
 def generate_response(query, collection, gpt_neo):
     results = collection.query(
-        query_texts=[query], n_results=10, include=["documents", "distances"]
+        query_texts=[query], n_results=5, include=["documents", "distances"]
     )
 
     sorted_results = sorted(
@@ -92,28 +86,19 @@ def generate_response(query, collection, gpt_neo):
     )
 
     top_documents = [
-        " ".join(doc) if isinstance(doc, list) else doc for doc, _ in sorted_results[:5]
+        " ".join(doc) if isinstance(doc, list) else doc for doc, _ in sorted_results[:3]
     ]
 
     context = "\n".join(top_documents)
 
-    prompt = f"The following passage is from Moby-Dick:\n{context}\nPlease provide an answer to the following question based on the passage: {query}"
+    prompt = f"The following text is extracted from Moby-Dick. Use the information provided to answer the question as accurately and concisely as possible. Answer only the question given and do not add additional information. Text: {context} Question: {query} Answer:"
     response = gpt_neo(
         prompt, max_new_tokens=150, truncation=True, return_full_text=True
     )
 
     generated_text = response[0]["generated_text"]
-    answer_start = generated_text.find(
-        "Please provide an answer to the following question based on the passage:"
-    )
-    if answer_start != -1:
-        generated_text = generated_text[
-            answer_start
-            + len(
-                "Please provide an answer to the following question based on the passage:"
-            ) :
-        ].strip()
-    return generated_text
+    answer = generated_text.split("Answer:")[-1].strip()
+    return answer
 
 
 if __name__ == "__main__":
