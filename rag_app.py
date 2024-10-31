@@ -1,7 +1,3 @@
-# import multiprocessing
-
-# multiprocessing.set_start_method("spawn")
-
 from transformers import pipeline
 import chromadb
 from chromadb.config import Settings
@@ -13,7 +9,9 @@ import os
 
 def main():
     # Load GPT-2 model using transformers library
-    gpt_neo = pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B")
+    gpt_neo = pipeline(
+        "text-generation", model="EleutherAI/gpt-neo-1.3B", pad_token_id=50256
+    )
 
     markdown_path = "data/moby-dick-output.md"
     with open(markdown_path, "r", encoding="utf-8") as file:
@@ -86,7 +84,7 @@ def main():
 
 def generate_response(query, collection, gpt_neo):
     results = collection.query(
-        query_texts=[query], n_results=5, include=["documents", "distances"]
+        query_texts=[query], n_results=10, include=["documents", "distances"]
     )
 
     sorted_results = sorted(
@@ -94,7 +92,7 @@ def generate_response(query, collection, gpt_neo):
     )
 
     top_documents = [
-        " ".join(doc) if isinstance(doc, list) else doc for doc, _ in sorted_results[:3]
+        " ".join(doc) if isinstance(doc, list) else doc for doc, _ in sorted_results[:5]
     ]
 
     context = "\n".join(top_documents)
