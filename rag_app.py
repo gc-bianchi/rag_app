@@ -6,6 +6,8 @@ from text_splitter import split_text
 import json
 import os
 from llama_index.core import Document
+from llama_index.core.node_parser import SemanticSplitterNodeParser
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ignore
 
 
 def main():
@@ -16,6 +18,25 @@ def main():
         content = file.read()
 
     documents = [Document(content=content, metadata={"source": "moby_dick"})]
+
+    embedding_model = HuggingFaceEmbedding(
+        model_name="Alibaba-NLP/gte-Qwen2-1.5B-instruct"
+    )
+
+    splitter = SemanticSplitterNodeParser(
+        embed_model=embedding_model,
+        breakpoint_percentile_threshold=95,
+        buffer_size=1,
+        include_metadata=True,
+    )
+
+    # print(dir(splitter))
+
+    nodes = splitter.get_nodes_from_documents(documents)
+
+    for i, node in enumerate(nodes[:5]):
+        print(f"Node {i+1} Text: {node.text}")
+        print(f"Node {i+1} Metadata: {node.metadata}")
 
     # print(dir(documents[0]))
     # test_doc = Document(
