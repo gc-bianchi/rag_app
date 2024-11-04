@@ -5,6 +5,7 @@ from chromadb.utils import embedding_functions
 from text_splitter import split_text
 import json
 import os
+from llama_index.core import Document
 
 
 def main():
@@ -13,6 +14,19 @@ def main():
     markdown_path = "data/moby-dick-output.md"
     with open(markdown_path, "r", encoding="utf-8") as file:
         content = file.read()
+
+    documents = [Document(content=content, metadata={"source": "moby_dick"})]
+
+    # print(dir(documents[0]))
+    # test_doc = Document(
+    #     text="This is a test of the Document content.",
+    #     metadata={"source": "test_source"},
+    # )
+    # print(test_doc.text)
+    # print(test_doc.metadata)
+
+    # print(documents[0].text)
+    # print(documents[0].metadata)
 
     chunks_path = "data/moby_dick_chunks.json"
 
