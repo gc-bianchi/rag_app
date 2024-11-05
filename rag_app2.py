@@ -123,7 +123,6 @@ def chatbot():
 
         context = "\n".join(relevant_texts)
 
-        # response_generator = pipeline("text-generation", model="gpt2")
         response_generator = pipeline(
             "text-generation", model="EleutherAI/gpt-neo-1.3B"
         )
