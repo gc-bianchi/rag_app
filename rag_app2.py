@@ -8,6 +8,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ign
 pdf_path = "data/herman-melville-moby-dick.pdf"
 docs_json_path = "data/llama_docs.json"
 nodes_json_path = "data/llama_nodes.json"
+embeddings_json_path = "data/llama_embeddings.json"
 
 if os.path.exists(docs_json_path):
     with open(docs_json_path, "r") as f:
@@ -30,18 +31,33 @@ splitter = SemanticSplitterNodeParser(
 )
 
 if os.path.exists(nodes_json_path):
-    # print("json exist")
     with open(nodes_json_path, "r") as f:
         nodes = [Document.from_dict(node) for node in json.load(f)]
     print("Nodes loaded from llama_nodes.json")
 else:
-    # print("json does not exist")
     nodes = splitter.get_nodes_from_documents(llama_docs)
 
     with open(nodes_json_path, "w") as f:
         json.dump([node.to_dict() for node in nodes], f)
     print("Nodes saved to llama_nodes.json")
 
-for i, node in enumerate(nodes[20:23]):
-    print(f"Node {i+1} Text: {node.text}")
-    print(f"Node {i+1} Metadata: {node.metadata}")
+# for i, node in enumerate(nodes[20:23]):
+#     print(f"Node {i+1} Text: {node.text}")
+#     print(f"Node {i+1} Metadata: {node.metadata}")
+
+if os.path.exists(embeddings_json_path):
+    with open(embeddings_json_path, "r") as f:
+        embeddings = json.load(f)
+    print("Embeddings loaded from llama_embeddings.json")
+else:
+    print("Starting to create embeddings for nodes...")
+    embeddings = [embedding_model.get_text_embedding(node.text) for node in nodes]
+    print(f"Embeddings created")
+
+    with open(embeddings_json_path, "w") as f:
+        json.dump(embeddings, f)
+    print("Embeddings saved to llama_embeddings.json")
+
+
+for i, embedding in enumerate(embeddings[20:23]):
+    print(f"Embedding {i+1}: {embedding}")
