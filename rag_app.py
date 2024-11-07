@@ -7,6 +7,8 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ign
 import chromadb
 from transformers import pipeline
 
+
+# file paths for pdf and where I saved output as json files
 pdf_path = "data/herman-melville-moby-dick.pdf"
 docs_json_path = "data/llama_docs.json"
 nodes_json_path = "data/llama_nodes.json"
