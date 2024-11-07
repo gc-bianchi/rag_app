@@ -1,136 +1,137 @@
-from transformers import pipeline
-import chromadb
-from chromadb.config import Settings
-from chromadb.utils import embedding_functions
-from text_splitter import split_text
 import json
 import os
+import pymupdf4llm
 from llama_index.core import Document
 from llama_index.core.node_parser import SemanticSplitterNodeParser
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ignore
+import chromadb
+from transformers import pipeline
+
+pdf_path = "data/herman-melville-moby-dick.pdf"
+docs_json_path = "data/llama_docs.json"
+nodes_json_path = "data/llama_nodes.json"
+embeddings_json_path = "data/llama_embeddings.json"
+
+if os.path.exists(docs_json_path):
+    with open(docs_json_path, "r") as f:
+        llama_docs = [Document.from_dict(doc) for doc in json.load(f)]
+    print("Documents loaded from llama_docs.json")
+else:
+    llama_reader = pymupdf4llm.LlamaMarkdownReader()
+    llama_docs = llama_reader.load_data(pdf_path)
+
+    with open(docs_json_path, "w") as f:
+        json.dump([doc.to_dict() for doc in llama_docs], f)
+    print("Documents saved to llama_docs.json")
+
+embedding_model = HuggingFaceEmbedding(model_name="Alibaba-NLP/gte-Qwen2-1.5B-instruct")
+splitter = SemanticSplitterNodeParser(
+    embed_model=embedding_model,
+    breakpoint_percentile_threshold=95,
+    buffer_size=1,
+    include_metadata=True,
+)
+
+if os.path.exists(nodes_json_path):
+    with open(nodes_json_path, "r") as f:
+        nodes = [Document.from_dict(node) for node in json.load(f)]
+    print("Nodes loaded from llama_nodes.json")
+else:
+    nodes = splitter.get_nodes_from_documents(llama_docs)
+
+    with open(nodes_json_path, "w") as f:
+        json.dump([node.to_dict() for node in nodes], f)
+    print("Nodes saved to llama_nodes.json")
+
+# for i, node in enumerate(nodes[20:23]):
+#     print(f"Node {i+1} Text: {node.text}")
+#     print(f"Node {i+1} Metadata: {node.metadata}")
+
+if os.path.exists(embeddings_json_path):
+    with open(embeddings_json_path, "r") as f:
+        embeddings = json.load(f)
+    print("Embeddings loaded from llama_embeddings.json")
+else:
+    print("Starting to create embeddings for nodes...")
+    embeddings = [embedding_model.get_text_embedding(node.text) for node in nodes]
+    print(f"Embeddings created")
+
+    with open(embeddings_json_path, "w") as f:
+        json.dump(embeddings, f)
+    print("Embeddings saved to llama_embeddings.json")
+
+# for i, embedding in enumerate(embeddings[20:23]):
+#     print(f"Embedding {i+1}: {embedding}")
+
+# Save embeddings in a ChromaDB collection
+chroma_client = chromadb.Client()
+collection_name = "moby_dick"
+
+# Check if collection exists by listing collections
+collections = [col.name for col in chroma_client.list_collections()]
+if collection_name in collections:
+    print("collection exists")
+    collection = chroma_client.get_collection(name=collection_name)
+else:
+    print("creating collection")
+    collection = chroma_client.create_collection(name=collection_name)
+
+count = collection.count()
+if count > 0:
+    existing_ids = set(collection.get()["ids"])
+else:
+    existing_ids = set()
+
+for id, (node, embedding) in enumerate(zip(nodes, embeddings)):
+    chunk_id = f"chunk_{id}"
+    if chunk_id not in existing_ids:
+        cleaned_metadata = {
+            k: (v if v is not None else "") for k, v in node.metadata.items()
+        }
+        collection.add(
+            documents=[node.text],
+            metadatas=[cleaned_metadata],
+            ids=[chunk_id],
+            embeddings=[embedding],
+        )
+print("Embeddings saved to ChromaDB collection")
 
 
-def main():
-    gpt_neo = pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B")
-
-    markdown_path = "data/moby-dick-output.md"
-    with open(markdown_path, "r", encoding="utf-8") as file:
-        content = file.read()
-
-    documents = [Document(content=content, metadata={"source": "moby_dick"})]
-
-    embedding_model = HuggingFaceEmbedding(
-        model_name="Alibaba-NLP/gte-Qwen2-1.5B-instruct"
-    )
-
-    splitter = SemanticSplitterNodeParser(
-        embed_model=embedding_model,
-        breakpoint_percentile_threshold=95,
-        buffer_size=1,
-        include_metadata=True,
-    )
-
-    # print(dir(splitter))
-
-    nodes = splitter.get_nodes_from_documents(documents)
-
-    for i, node in enumerate(nodes[:5]):
-        print(f"Node {i+1} Text: {node.text}")
-        print(f"Node {i+1} Metadata: {node.metadata}")
-
-    # print(dir(documents[0]))
-    # test_doc = Document(
-    #     text="This is a test of the Document content.",
-    #     metadata={"source": "test_source"},
-    # )
-    # print(test_doc.text)
-    # print(test_doc.metadata)
-
-    # print(documents[0].text)
-    # print(documents[0].metadata)
-
-    chunks_path = "data/moby_dick_chunks.json"
-
-    if os.path.exists(chunks_path):
-        with open(chunks_path, "r", encoding="utf-8") as file:
-            chunks = json.load(file)
-    else:
-        chunks = split_text(content)
-        with open(chunks_path, "w", encoding="utf-8") as file:
-            json.dump(chunks, file)
-
-    chroma_client = chromadb.Client()
-
-    collection_name = "moby_dick"
-
-    # Check if collection exists by listing collections
-    collections = [col.name for col in chroma_client.list_collections()]
-    if collection_name in collections:
-        # print("already a collection")
-        collection = chroma_client.get_collection(name=collection_name)
-    else:
-        # print("create a new collection")
-        collection = chroma_client.create_collection(name=collection_name)
-
-    embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name="all-MiniLM-L6-v2"
-    )
-
-    count = collection.count()
-    # print(f"count: ${count}")
-
-    if count > 0:
-        # print(f"{count} greater than zero")
-        existing_ids = set(collection.get()["ids"])
-    else:
-        # print("create empty set")
-        existing_ids = set()
-    for id, chunk in enumerate(chunks):
-        chunk_id = f"chunk_{id}"
-        if chunk_id not in existing_ids:
-            embedding = embedding_function([chunk])[0]
-
-            collection.add(
-                documents=[chunk],
-                metadatas=[{"source": "moby_dick"}],
-                ids=[chunk_id],
-                embeddings=[embedding],
-            )
-
-    # Chatbot loop
+def chatbot():
+    print("Starting chatbot. Type 'exit' to quit.")
     while True:
-        query = input("Ask a question about Moby-Dick (or type 'exit' to quit): ")
+        query = input("Ask a question about Moby-Dick: ")
         if query.lower() == "exit":
             break
-        response = generate_response(query, collection, gpt_neo)
-        print(response)
+
+        query_embedding = embedding_model.get_text_embedding(query)
+
+        try:
+            results = collection.query(query_embeddings=[query_embedding], n_results=3)
+            # print("Query results:", results)
+
+            relevant_texts = results.get("documents", [[]])[0]
+            if not relevant_texts:
+                print("No relevant texts found.")
+                continue
+        except Exception as e:
+            print(f"Error querying the collection: {e}")
+            continue
+
+        context = "\n".join(relevant_texts)
+
+        response_generator = pipeline(
+            "text-generation", model="EleutherAI/gpt-neo-1.3B"
+        )
+
+        prompt = f"Context: {context}\nQuestion: {query}\nAnswer:"
+
+        response = response_generator(
+            prompt, max_new_tokens=150, truncation=True, return_full_text=True
+        )
+
+        # Print the response
+        print(f"Answer: {response[0]['generated_text'].split('Answer:')[-1].strip()}")
 
 
-def generate_response(query, collection, gpt_neo):
-    results = collection.query(
-        query_texts=[query], n_results=5, include=["documents", "distances"]
-    )
-
-    sorted_results = sorted(
-        zip(results["documents"], results["distances"]), key=lambda x: x[1]
-    )
-
-    top_documents = [
-        " ".join(doc) if isinstance(doc, list) else doc for doc, _ in sorted_results[:3]
-    ]
-
-    context = "\n".join(top_documents)
-
-    # prompt = f"The following text is extracted from Moby-Dick. Use the information provided to answer the question as accurately and concisely as possible. Answer only the question given and do not add additional information. Text: {context} Question: {query} Answer:"
-    prompt = f"""The following passage is from Moby-Dick: {context} Please provide an answer to the following question based on the passage: {query}"""
-    response = gpt_neo(
-        prompt, max_new_tokens=150, truncation=True, return_full_text=True
-    )
-
-    generated_text = response[0]["generated_text"]
-    answer = generated_text.split("Answer:")[-1].strip()
-    return answer
-
-
-if __name__ == "__main__":
-    main()
+chatbot()
