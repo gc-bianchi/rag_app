@@ -9,7 +9,7 @@ from transformers import pipeline
 app = FastAPI()
 
 embedding_model = HuggingFaceEmbedding(model_name="Alibaba-NLP/gte-Qwen2-1.5B-instruct")
-chroma_client = chromadb.Client()
+chroma_client = chromadb.PersistentClient(path="chroma_db_data")
 collection_name = "moby_dick"
 
 collections = [col.name for col in chroma_client.list_collections()]
@@ -17,6 +17,22 @@ if collection_name in collections:
     collection = chroma_client.get_collection(name=collection_name)
 else:
     collection = chroma_client.create_collection(name=collection_name)
+    if os.path.exists("data/llama_nodes.json"):
+        with open("data/llama_nodes.json", "r") as f:
+            nodes = json.load(f)
+        with open("data/llama_embeddings.json", "r") as f:
+            embeddings = json.load(f)
+        for id, (node, embedding) in enumerate(zip(nodes, embeddings)):
+            # Clean the metadata to ensure all values are valid types
+            cleaned_metadata = {
+                k: (v if v is not None else "") for k, v in node["metadata"].items()
+            }
+            collection.add(
+                documents=[node["text"]],
+                metadatas=[cleaned_metadata],
+                ids=[f"chunk_{id}"],
+                embeddings=[embedding],
+            )
 
 response_generator = pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B")
 
