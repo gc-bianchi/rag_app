@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 import json
 import os
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ignore
@@ -20,15 +21,19 @@ else:
 response_generator = pipeline("text-generation", model="EleutherAI/gpt-neo-1.3B")
 
 
+class QueryRequest(BaseModel):
+    query: str
+
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Moby-Dick RAG API"}
 
 
 @app.post("/query")
-async def query_model(query: str):
+async def query_model(request: QueryRequest):
     try:
-        query_embedding = embedding_model.get_text_embedding(query)
+        query_embedding = embedding_model.get_text_embedding(request.query)
 
         results = collection.query(query_embeddings=[query_embedding], n_results=3)
 
@@ -37,7 +42,7 @@ async def query_model(query: str):
             return {"response": "No relevant texts found."}
 
         context = "\n".join(relevant_texts)
-        prompt = f"Context: {context}\nQuestion: {query}\nAnswer:"
+        prompt = f"Context: {context}\nQuestion: {request.query}\nAnswer:"
 
         response = response_generator(
             prompt, max_new_tokens=150, truncation=True, return_full_text=True
