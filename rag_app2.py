@@ -63,9 +63,6 @@ else:
 # for i, embedding in enumerate(embeddings[20:23]):
 #     print(f"Embedding {i+1}: {embedding}")
 
-chroma_client = chromadb.Client()
-collection_name = "moby_dick"
-
 # Save embeddings in a ChromaDB collection
 chroma_client = chromadb.Client()
 collection_name = "moby_dick"
