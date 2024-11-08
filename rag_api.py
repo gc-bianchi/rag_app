@@ -23,7 +23,7 @@ else:
         with open("data/llama_embeddings.json", "r") as f:
             embeddings = json.load(f)
         for id, (node, embedding) in enumerate(zip(nodes, embeddings)):
-            # Clean the metadata to ensure all values are valid types
+
             cleaned_metadata = {
                 k: (v if v is not None else "") for k, v in node["metadata"].items()
             }
