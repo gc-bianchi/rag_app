@@ -66,5 +66,45 @@
     {
         "question": "What are the mariners promising themselves from the precious oil and bone?",
         "expected_answer": "They are promising themselves a good 150 pounds."
+    },
+    {
+        "question": "What did the old man do to the quadrant in his frustration?",
+        "expected_answer": "In his frustration, the old man dashed the quadrant to the deck, declaring he would no longer guide his way by it. He even trampled on it, saying he would destroy it."
+    },
+    {
+        "question": "What was Ahab's ultimate purpose and how did it influence his actions?",
+        "expected_answer": "Ahab's ultimate purpose was the capture of Moby Dick, which consumed him with a hot fire. This purpose was prevalent in all his thoughts and actions, and he seemed ready to sacrifice all mortal interests for this one passion. Despite this, he did not entirely abandon the collateral prosecution of the voyage, possibly due to his nature and long habituation to a fiery whaleman's ways."
+    },
+    {
+        "question": "How much sperm does a large whale's case generally yield?",
+        "expected_answer": "A large whale's case generally yields about five hundred gallons of sperm."
+    },
+    {
+        "question": "What is the reader referred to as in the text?",
+        "expected_answer": "The reader is referred to as a \"Loose-Fish and a Fast\"."
+    },
+    {
+        "question": "What will be ready for them in old Nantucket in three years' time?",
+        "expected_answer": "A hot supper will be smoking for them."
+    },
+    {
+        "question": "What are the two types of bands, or schools, of sperm whales?",
+        "expected_answer": "The two types of bands, or schools, of sperm whales are those composed almost entirely of females, and those containing only young vigorous males, or bulls."
+    },
+    {
+        "question": "Who was prepared to connect the ideas of mildness and repose with the first sight of the particular whale he pursued?",
+        "expected_answer": "Ahab was prepared to connect the ideas of mildness and repose with the first sight of the particular whale he pursued."
+    },
+    {
+        "question": "When did the society pass a resolution to only patronize steel pens?",
+        "expected_answer": "The society passed the resolution to only patronize steel pens within the last month or two."
+    },
+    {
+        "question": "What are some of the comical things the country dandy does upon reaching the seaport?",
+        "expected_answer": "He orders bell-buttons to his waistcoats and straps to his canvas trousers."
+    },
+    {
+        "question": "Who shouted at the Captain to stop his babbling?",
+        "expected_answer": "Steelkilt."
     }
 ]
