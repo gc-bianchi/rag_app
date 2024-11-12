@@ -38,7 +38,7 @@ def generate_question_and_answer(context):
     return question_part, answer_part
 
 
-def create_test_set(collection, output_file="data/test_set2.json", num_samples=10):
+def create_test_set(collection, output_file="data/test_set.json", num_samples=10):
     selected_chunks = extract_random_chunks(collection, num_samples)
 
     test_set = []

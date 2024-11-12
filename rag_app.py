@@ -5,8 +5,8 @@ from llama_index.core import Document
 from llama_index.core.node_parser import SemanticSplitterNodeParser
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ignore
 import chromadb
-from transformers import pipeline
-
+from dotenv import load_dotenv
+from openai import OpenAI
 
 # file paths for pdf and where I saved output as json files
 pdf_path = "data/herman-melville-moby-dick.pdf"
@@ -66,7 +66,7 @@ else:
 #     print(f"Embedding {i+1}: {embedding}")
 
 # Save embeddings in a ChromaDB collection
-chroma_client = chromadb.Client()
+chroma_client = chromadb.PersistentClient(path="./chroma_db_data")
 collection_name = "moby_dick"
 
 # Check if collection exists by listing collections
@@ -98,6 +98,10 @@ for id, (node, embedding) in enumerate(zip(nodes, embeddings)):
         )
 print("Embeddings saved to ChromaDB collection")
 
+# Initialize OpenAI client
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 def chatbot():
     print("Starting chatbot. Type 'exit' to quit.")
@@ -122,18 +126,21 @@ def chatbot():
 
         context = "\n".join(relevant_texts)
 
-        response_generator = pipeline(
-            "text-generation", model="EleutherAI/gpt-neo-1.3B"
-        )
-
         prompt = f"Context: {context}\nQuestion: {query}\nAnswer:"
 
-        response = response_generator(
-            prompt, max_new_tokens=150, truncation=True, return_full_text=True
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "user", "content": prompt},
+            ],
+            model="gpt-4",
+            max_tokens=150,
+            temperature=0.7,
         )
 
         # Print the response
-        print(f"Answer: {response[0]['generated_text'].split('Answer:')[-1].strip()}")
+        answer = response.choices[0].message.content.strip()
+        print(f"Answer: {answer}")
+        # print(f"Answer: {response}")
 
 
 chatbot()
