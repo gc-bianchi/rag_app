@@ -7,6 +7,9 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ign
 import chromadb
 from dotenv import load_dotenv
 from openai import OpenAI
+import multiprocessing
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # file paths for pdf and where I saved output as json files
 pdf_path = "data/herman-melville-moby-dick.pdf"
@@ -113,7 +116,7 @@ def chatbot():
         query_embedding = embedding_model.get_text_embedding(query)
 
         try:
-            results = collection.query(query_embeddings=[query_embedding], n_results=3)
+            results = collection.query(query_embeddings=[query_embedding], n_results=5)
             # print("Query results:", results)
 
             relevant_texts = results.get("documents", [[]])[0]
