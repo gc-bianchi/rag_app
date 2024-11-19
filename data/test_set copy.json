@@ -1,0 +1,110 @@
+[
+    {
+        "question": "What is the seaman's name for an albatross?",
+        "expected_answer": "The seaman's name for an albatross is goney."
+    }
+    // {
+    //     "question": "What happens when the second iron is thrown overboard?",
+    //     "expected_answer": "When the second iron is thrown overboard, it becomes a dangling, sharp-edged terror, skittishly curvetting about both boat and whale, entangling the lines, or cutting them, and making a prodigious hazard."
+    // },
+    // {
+    //     "question": "Who did Ahab meet for the third time?",
+    //     "expected_answer": "Ahab met Moby Dick for the third time."
+    // },
+    // {
+    //     "question": "What were the orders given to the carpenter and the ship's forge?",
+    //     "expected_answer": "The carpenter was ordered to complete the leg that night and provide all the fittings for it, independent of those pertaining to the distrusted one in use. The ship\u2019s forge was ordered to be hoisted out of its temporary idleness in the hold."
+    // },
+    // {
+    //     "question": "What is the character doing to improve himself?",
+    //     "expected_answer": "The character is improving his mind."
+    // },
+    // {
+    //     "question": "What is the narrator's habit when they are in bed?",
+    //     "expected_answer": "The narrator has a habit of always keeping their eyes shut when they are in bed, whether by day or by night, and whether asleep or awake, to more concentrate the snugness of being in bed."
+    // },
+    // {
+    //     "question": "What happens to the whale's body after it's been killed?",
+    //     "expected_answer": "The white body of the whale is let go and floats away. The sea around it is torn and splashed by sharks, and the air above is filled with fowls. For hours, the ship watches as the sight of the whale's body is seen. Eventually, it gets lost in the sea. The sight of the whale's body is seen as a doleful and mocking funeral by the sea-vultures and air-sharks. Despite the desecration of the body, a vengeful ghost is said to survive and hover over it."
+    // },
+    // {
+    //     "question": "What is a \"blasted whale\" according to the text?",
+    //     "expected_answer": "A \"blasted whale\" is a whale that has died unmolested on the sea, and so floated as an unappropriated corpse."
+    // },
+    // {
+    //     "question": "What mode of transportation was used to fetch Elijah?",
+    //     "expected_answer": "A coach and four was used to fetch Elijah."
+    // },
+    // {
+    //     "question": "How did Queequeg manage the situation when the beset boat was surrounded by the crazed creatures?",
+    //     "expected_answer": "Queequeg steered the boat manfully, sheering off from different monsters directly across their route in advance and edging away from others. Starbuck stood up in the bows, pricking out of their way whatever whales he could reach by short darts. The oarsmen attended to the shouting part of the business."
+    // },
+    // {
+    //     "question": "What is the reason for the whale being depreciated as a civilized dish?",
+    //     "expected_answer": "The whale is depreciated as a civilized dish due to its exceeding richness, with its meat being too fat to be delicately good. It is also referenced that the eating of whale meat can be viewed with abhorrence by landsmen due to the idea of eating a newly murdered thing of the sea."
+    // },
+    // {
+    //     "question": "What kind of man did Starbuck not want in his boat during the fishery?",
+    //     "expected_answer": "Starbuck did not want a man in his boat who is not afraid of a whale. He believed that an utterly fearless man is a far more dangerous comrade than a coward."
+    // },
+    // {
+    //     "question": "What orders did the carpenter receive regarding the leg?",
+    //     "expected_answer": "The carpenter was ordered to have the leg completed that night and to provide all the fittings for it, independent of those pertaining to the distrusted one in use. He was also instructed to hoist the ship's forge out of its temporary idleness in the hold to accelerate the affair."
+    // },
+    // {
+    //     "question": "What kind of work was the carpenter of the Pequod skilled in?",
+    //     "expected_answer": "The carpenter of the Pequod was experienced in numerous trades and callings related to his own. He was efficient in handling mechanical emergencies that could occur in a large ship during a three or four years\u2019 voyage in uncivilized and far-distant seas. He was skilled in repairing stove boats, sprung spars, reforming the shape of clumsy-bladed oars, inserting bull\u2019s eyes in the deck, or new tree-nails in the side planks, and other miscellaneous matters related to his special business. He was also an expert in all manner of conflicting aptitudes, both useful and capricious."
+    // },
+    // {
+    //     "question": "What happened when the line felt the double strain and tug?",
+    //     "expected_answer": "It snapped in the empty air."
+    // },
+    // {
+    //     "question": "What is the title of chapter LXXXV?",
+    //     "expected_answer": "Ambergris"
+    // },
+    // {
+    //     "question": "What are the mariners promising themselves from the precious oil and bone?",
+    //     "expected_answer": "They are promising themselves a good 150 pounds."
+    // },
+    // {
+    //     "question": "What did the old man do to the quadrant in his frustration?",
+    //     "expected_answer": "In his frustration, the old man dashed the quadrant to the deck, declaring he would no longer guide his way by it. He even trampled on it, saying he would destroy it."
+    // },
+    // {
+    //     "question": "What was Ahab's ultimate purpose and how did it influence his actions?",
+    //     "expected_answer": "Ahab's ultimate purpose was the capture of Moby Dick, which consumed him with a hot fire. This purpose was prevalent in all his thoughts and actions, and he seemed ready to sacrifice all mortal interests for this one passion. Despite this, he did not entirely abandon the collateral prosecution of the voyage, possibly due to his nature and long habituation to a fiery whaleman's ways."
+    // },
+    // {
+    //     "question": "How much sperm does a large whale's case generally yield?",
+    //     "expected_answer": "A large whale's case generally yields about five hundred gallons of sperm."
+    // },
+    // {
+    //     "question": "What is the reader referred to as in the text?",
+    //     "expected_answer": "The reader is referred to as a \"Loose-Fish and a Fast\"."
+    // },
+    // {
+    //     "question": "What will be ready for them in old Nantucket in three years' time?",
+    //     "expected_answer": "A hot supper will be smoking for them."
+    // },
+    // {
+    //     "question": "What are the two types of bands, or schools, of sperm whales?",
+    //     "expected_answer": "The two types of bands, or schools, of sperm whales are those composed almost entirely of females, and those containing only young vigorous males, or bulls."
+    // },
+    // {
+    //     "question": "Who was prepared to connect the ideas of mildness and repose with the first sight of the particular whale he pursued?",
+    //     "expected_answer": "Ahab was prepared to connect the ideas of mildness and repose with the first sight of the particular whale he pursued."
+    // },
+    // {
+    //     "question": "When did the society pass a resolution to only patronize steel pens?",
+    //     "expected_answer": "The society passed the resolution to only patronize steel pens within the last month or two."
+    // },
+    // {
+    //     "question": "What are some of the comical things the country dandy does upon reaching the seaport?",
+    //     "expected_answer": "He orders bell-buttons to his waistcoats and straps to his canvas trousers."
+    // },
+    // {
+    //     "question": "Who shouted at the Captain to stop his babbling?",
+    //     "expected_answer": "Steelkilt."
+    // }
+]
