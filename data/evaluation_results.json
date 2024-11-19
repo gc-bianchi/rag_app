@@ -2,7 +2,190 @@
     {
         "query": "What is the seaman's name for an albatross?",
         "generated_answer": "Goney",
-        "similarity_score": 0.24801830356978943,
-        "context_recall": 0.0
+        "similarity_score": 0.21888131554494294,
+        "context_recall": 1.0,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What happens when the second iron is thrown overboard?",
+        "generated_answer": "When the second iron is thrown overboard, it's usually in a situation of extreme urgency. It is thrown out of the boat and into the sea, to ensure that it does not pose a risk to the crew if the whale were to violently react after being harpooned by the first iron. If the first iron were to be dislodged in the ensuing struggle, the second iron, already connected to the line and in the water, could potentially still maintain a hold on the whale.",
+        "similarity_score": 0.7756342445755638,
+        "context_recall": 0.4069767441860465,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "Who did Ahab meet for the third time?",
+        "generated_answer": "The text does not provide information on who Ahab met for the third time.",
+        "similarity_score": 0.5796221658706735,
+        "context_recall": 0.5,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What were the orders given to the carpenter and the ship's forge?",
+        "generated_answer": "The carpenter was ordered to make a new leg for Ahab, using the studs and joists of jaw-ivory (Sperm Whale) that had been accumulated on the voyage. The ship's forge was not mentioned in the given text.",
+        "similarity_score": 0.5873716916968127,
+        "context_recall": 0.48717948717948717,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What is the character doing to improve himself?",
+        "generated_answer": "The character is mentally preparing himself for a fight and physically preparing by organizing his belongings in his sea-chest and carving the lid with figures and drawings. He is also using his observations and feelings to navigate the sea.",
+        "similarity_score": 0.7504900998119187,
+        "context_recall": 0.225,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What is the narrator's habit when they are in bed?",
+        "generated_answer": "The narrator's habit when they are in bed is to chat and nap at short intervals with Queequeg. They are very sociable and comfortable with each other, with Queequeg occasionally throwing his legs over the narrator's. They also find themselves sitting up, leaning against the head-board with their knees drawn up close together and their noses bending over them. They enjoy the warmth of the bed, especially in contrast to the chilly room.",
+        "similarity_score": 0.7568695609212361,
+        "context_recall": 0.3684210526315789,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What happens to the whale's body after it's been killed?",
+        "generated_answer": "The body of the whale usually floats after it's been killed, with its side or belly considerably elevated above the surface. However, sometimes the recently killed Sperm Whale inevitably sinks. In some instances, after the lapse of many hours or several days, the sunken whale again rises, more buoyant than in life due to gases generated in its body, causing it to swell. As for its skin or blubber, it is stripped from the whale in long pieces, called blanket-pieces.",
+        "similarity_score": 0.7212076056939982,
+        "context_recall": 0.3902439024390244,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What is a \"blasted whale\" according to the text?",
+        "generated_answer": "The text does not provide information on what a \"blasted whale\" is.",
+        "similarity_score": 0.6531958253416816,
+        "context_recall": 0.5,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What mode of transportation was used to fetch Elijah?",
+        "generated_answer": "The text does not provide information on the mode of transportation used to fetch Elijah.",
+        "similarity_score": 0.5710701437546247,
+        "context_recall": 0.26666666666666666,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "How did Queequeg manage the situation when the beset boat was surrounded by the crazed creatures?",
+        "generated_answer": "The text does not provide information on how Queequeg managed the situation when the beset boat was surrounded by crazed creatures.",
+        "similarity_score": 0.5191845306659817,
+        "context_recall": 0.2857142857142857,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What is the reason for the whale being depreciated as a civilized dish?",
+        "generated_answer": "The text does not provide a reason for the whale being depreciated as a civilized dish.",
+        "similarity_score": 0.7317315456285269,
+        "context_recall": 0.625,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What kind of man did Starbuck not want in his boat during the fishery?",
+        "generated_answer": "The text does not provide information on what kind of man Starbuck did not want in his boat during the fishery.",
+        "similarity_score": 0.6584808211609069,
+        "context_recall": 0.47619047619047616,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What orders did the carpenter receive regarding the leg?",
+        "generated_answer": "The carpenter was ordered by Ahab to make a new leg for him. He was directed to use all the studs and joists of jaw-ivory (Sperm Whale) that had been accumulated on the voyage, and to select the stoutest, clearest-grained stuff for the construction.",
+        "similarity_score": 0.7929528098238992,
+        "context_recall": 0.4782608695652174,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What kind of work was the carpenter of the Pequod skilled in?",
+        "generated_answer": "The carpenter of the Pequod was skilled in various trades and callings related to his profession. He was experienced in repairing stove boats, reforming the shape of oars, inserting bull's eyes in the deck, putting new tree-nails in the side planks and handling other miscellaneous tasks pertaining to his special business. He was also expert in all manner of conflicting aptitudes, both useful and capricious. Additionally, he was adept in handling mechanical emergencies that frequently occurred in a large ship on a three or four years' voyage.",
+        "similarity_score": 0.9688166381209625,
+        "context_recall": 0.8876404494382022,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What happened when the line felt the double strain and tug?",
+        "generated_answer": "The text does not provide specific information on what happened when the line felt the double strain and tug.",
+        "similarity_score": 0.4307535899651815,
+        "context_recall": 0.15789473684210525,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What is the title of chapter LXXXV?",
+        "generated_answer": "The text does not provide information on the title of chapter LXXXV.",
+        "similarity_score": 0.11701021395870802,
+        "context_recall": 0.0,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What are the mariners promising themselves from the precious oil and bone?",
+        "generated_answer": "The text does not explicitly state what the mariners are promising themselves from the precious oil and bone. However, it implies that the oil is crucial for their survival and comfort, providing light and heat.",
+        "similarity_score": 0.493238641029628,
+        "context_recall": 0.08571428571428572,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What did the old man do to the quadrant in his frustration?",
+        "generated_answer": "The text does not provide information on what the old man did to the quadrant in his frustration.",
+        "similarity_score": 0.66646826746195,
+        "context_recall": 0.6111111111111112,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What was Ahab's ultimate purpose and how did it influence his actions?",
+        "generated_answer": "Ahab's ultimate purpose was the capture of Moby Dick, a white whale which had previously dismembered him. This purpose consumed him completely, influencing all his thoughts and actions. It led him to sacrifice all mortal interests and to continue the whale hunt with a fiery passion. Ahab's monomaniacal pursuit of Moby Dick even extended to a possible vindictiveness towards all Sperm Whales, and he believed that the more whales he slew, the better his chances of encountering his nemesis. This obsession also resulted in him using his crew as tools for his mission, maintaining a magnetic ascendancy over them, particularly over his chief mate, Starbuck.",
+        "similarity_score": 0.8792540463701597,
+        "context_recall": 0.5514018691588785,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "How much sperm does a large whale's case generally yield?",
+        "generated_answer": "The text does not provide information on how much sperm a large whale's case generally yields.",
+        "similarity_score": 0.7712902138374336,
+        "context_recall": 0.47058823529411764,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What is the reader referred to as in the text?",
+        "generated_answer": "My friend",
+        "similarity_score": 0.3638478780326727,
+        "context_recall": 0.0,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What will be ready for them in old Nantucket in three years' time?",
+        "generated_answer": "The text does not provide information on what will be ready for them in old Nantucket in three years' time.",
+        "similarity_score": 0.44601422949700614,
+        "context_recall": 0.2,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What are the two types of bands, or schools, of sperm whales?",
+        "generated_answer": "The text does not provide information on the two types of bands, or schools, of sperm whales.",
+        "similarity_score": 0.7516859574618853,
+        "context_recall": 0.6470588235294118,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "Who was prepared to connect the ideas of mildness and repose with the first sight of the particular whale he pursued?",
+        "generated_answer": "The text does not provide information on who was prepared to connect the ideas of mildness and repose with the first sight of the particular whale he pursued.",
+        "similarity_score": 0.7112249113665212,
+        "context_recall": 0.75,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "When did the society pass a resolution to only patronize steel pens?",
+        "generated_answer": "The text does not provide information on when the society passed a resolution to only patronize steel pens.",
+        "similarity_score": 0.777889899743164,
+        "context_recall": 0.5555555555555556,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "What are some of the comical things the country dandy does upon reaching the seaport?",
+        "generated_answer": "The text does not provide information on the comical things a country dandy does upon reaching the seaport.",
+        "similarity_score": 0.3636787841808359,
+        "context_recall": 0.0,
+        "exact_match_score": 0.0
+    },
+    {
+        "query": "Who shouted at the Captain to stop his babbling?",
+        "generated_answer": "The text does not specify who shouted at the Captain to stop his babbling.",
+        "similarity_score": 0.2925792889696783,
+        "context_recall": 0.0,
+        "exact_match_score": 0.0
     }
 ]

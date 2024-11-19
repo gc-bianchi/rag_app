@@ -7,6 +7,7 @@ from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import numpy as np
+import re
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -67,8 +68,8 @@ def evaluate_responses(responses):
     evaluation_results = []
     for response in responses:
         query = response["query"]
-        context = response["context"]
-        generated_answer = response["response"]
+        context = response["context"].lower().strip()
+        generated_answer = response["response"].lower().strip()
 
         context_embedding = embedding_model.get_text_embedding(context)
         answer_embedding = embedding_model.get_text_embedding(generated_answer)
@@ -76,16 +77,24 @@ def evaluate_responses(responses):
             0
         ][0]
 
+        context_words = re.findall(r"\w+", context)
+        generated_words = re.findall(r"\w+", generated_answer)
         recall_score = (
-            1.0 if any(word in context for word in generated_answer.split()) else 0.0
+            sum(1 for word in generated_words if word in context_words)
+            / len(generated_words)
+            if generated_words
+            else 0.0
         )
+
+        exact_match_score = 1.0 if context == generated_answer else 0.0
 
         evaluation_results.append(
             {
                 "query": query,
-                "generated_answer": generated_answer,
+                "generated_answer": response["response"],
                 "similarity_score": similarity_score,
                 "context_recall": recall_score,
+                "exact_match_score": exact_match_score,
             }
         )
     return evaluation_results
