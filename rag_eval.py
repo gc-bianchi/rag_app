@@ -27,7 +27,7 @@ def chatbot(query):
     query_embedding = embedding_model.get_text_embedding(query)
 
     try:
-        results = collection.query(query_embeddings=[query_embedding], n_results=5)
+        results = collection.query(query_embeddings=[query_embedding], n_results=8)
         relevant_texts = results.get("documents", [[]])[0]
         if not relevant_texts:
             return "No relevant texts found."
@@ -35,7 +35,7 @@ def chatbot(query):
         return f"Error querying the collection: {e}"
 
     context = "\n".join(relevant_texts)
-    prompt = f"Context: {context}\nQuestion: {query}\nAnswer:"
+    prompt = f"Based on the context provided, answer the following question as accurately as possible. If the answer is not clear, provide your best inference.\nContext: {context}\nQuestion: {query}\nAnswer:"
 
     response = client.chat.completions.create(
         messages=[

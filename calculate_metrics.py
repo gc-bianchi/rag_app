@@ -36,7 +36,7 @@ def save_metrics(metrics, output_path):
 if __name__ == "__main__":
 
     input_file_path = "data/evaluation_results.json"
-    output_file_path = "data/output_metrics_second_run.json"
+    output_file_path = "data/output_metrics_updated_prompt.json"
 
     data = load_data(input_file_path)
     metrics = calculate_metrics(data)
