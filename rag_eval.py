@@ -1,31 +1,19 @@
 import json
 import os
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ignore
 import chromadb
 from openai import OpenAI
-from ragas.metrics import (
-    LLMContextRecall,
-    Faithfulness,
-    FactualCorrectness,
-    SemanticSimilarity,
-)
-
+from sklearn.metrics.pairwise import cosine_similarity
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+import numpy as np
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0)
 embedding_model = HuggingFaceEmbedding(model_name="Alibaba-NLP/gte-Qwen2-1.5B-instruct")
 chroma_client = chromadb.PersistentClient(path="./chroma_db_data")
 collection = chroma_client.get_collection(name="moby_dick")
-
-
-context_recall_metric = LLMContextRecall(llm=eval_llm)
-faithfulness_metric = Faithfulness(llm=eval_llm)
-factual_correctness_metric = FactualCorrectness(llm=eval_llm)
-semantic_similarity_metric = SemanticSimilarity(llm=eval_llm)
 
 with open("data/test_set.json", "r") as f:
     test_set = json.load(f)
@@ -68,35 +56,45 @@ for item in test_set:
     response = generate_response(question)
     responses.append(
         {
-            "question": question,
-            "expected_answer": item["expected_answer"],
-            "generated_answer": response,
+            "query": question,
+            "context": item["expected_answer"],
+            "response": response,
         }
     )
 
 
-for response in responses:
-    question = response["question"]
-    expected_answer = response["expected_answer"]
-    generated_answer = response["generated_answer"]
+def evaluate_responses(responses):
+    evaluation_results = []
+    for response in responses:
+        query = response["query"]
+        context = response["context"]
+        generated_answer = response["response"]
 
-    context_recall_score = context_recall_metric.evaluate(
-        query=question, context=expected_answer, response=generated_answer
-    )
+        context_embedding = embedding_model.get_text_embedding(context)
+        answer_embedding = embedding_model.get_text_embedding(generated_answer)
+        similarity_score = cosine_similarity([context_embedding], [answer_embedding])[
+            0
+        ][0]
 
-    faithfulness_score = faithfulness_metric.evaluate(
-        query=question, context=expected_answer, response=generated_answer
-    )
+        recall_score = (
+            1.0 if any(word in context for word in generated_answer.split()) else 0.0
+        )
 
-    factual_correctness_score = factual_correctness_metric.evaluate(
-        query=question, context=expected_answer, response=generated_answer
-    )
+        evaluation_results.append(
+            {
+                "query": query,
+                "generated_answer": generated_answer,
+                "similarity_score": similarity_score,
+                "context_recall": recall_score,
+            }
+        )
+    return evaluation_results
 
-    semantic_similarity_score = semantic_similarity_metric.evaluate(
-        response=generated_answer, reference=expected_answer
-    )
+
+evaluation_results = evaluate_responses(responses)
+
 
 with open("data/evaluation_results.json", "w") as f:
-    json.dump(responses, f, indent=4)
+    json.dump(evaluation_results, f, indent=4)
 
 print("Evaluation results saved to data/evaluation_results.json")

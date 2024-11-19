@@ -1,0 +1,8 @@
+[
+    {
+        "query": "What is the seaman's name for an albatross?",
+        "generated_answer": "Goney",
+        "similarity_score": 0.24801830356978943,
+        "context_recall": 0.0
+    }
+]
