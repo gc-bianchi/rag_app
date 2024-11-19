@@ -5,7 +5,6 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding  # type: ign
 import chromadb
 from openai import OpenAI
 from sklearn.metrics.pairwise import cosine_similarity
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import numpy as np
 import re
 

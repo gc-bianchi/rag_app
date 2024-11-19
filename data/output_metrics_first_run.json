@@ -1,0 +1,8 @@
+{
+    "average_similarity_score": 0.6055720340920945,
+    "average_context_recall": 0.4046895759709796,
+    "max_similarity_score": 0.9688166381209625,
+    "min_similarity_score": 0.11701021395870802,
+    "std_similarity_score": 0.2040271601104571,
+    "exact_match_count": 0
+}
